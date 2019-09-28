@@ -13,6 +13,12 @@ function Question(id, questionText, options, correctAnswer) {
   this.correctAnswer = correctAnswer;
 }
 
+  return {
+    addQuestionOnLocalStorage: function(newQuestText, opts) {
+      console.log('clicked newQuestText')
+    }
+  }
+
 
 }) ();
 
@@ -21,20 +27,23 @@ var UIController = (function() {
 
   var domItems = {
     /********Admin Panal Elements*********/
-    questInsertBtn: document.getElementById('question-insert-btn')
+    questInsertBtn: document.getElementById('question-insert-btn'),
+    newQuestionText: document.getElementById('new-question-text'),
+    adminOptions: document.querySelectorAll('.admin-option')
   };
 
   return {
-    getdomItems: domItems
+    getDomItems: domItems
   };
 
 })();
 
 /*************************************************************************CONTROLLER****************************************************************/
 var controller  = (function(quizCtrl, UICtrl){
+  var selectedDomItems = UICtrl.getDomItems;
 
-  UICtrl.getdomItems.questInsertBtn.addEventListener('click', function(){
-    console.log('this is a button clicked')
+  selectedDomItems.questInsertBtn.addEventListener('click', function() {
+    quizCtrl.addQuestionOnLocalStorage(selectedDomItems.newQuestText, selectedDomItems.adminOptions);
   })
 
 })(quizController, UIController);
