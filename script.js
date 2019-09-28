@@ -4,19 +4,37 @@
 /*************************************************************************QUIZCONTROLLER****************************************************************/
 var quizController = (function() {
 
-  localStorage.setItem('data', JSON.stringify([1,2,3,4]));
-  localStorage.setItem('data', JSON.stringify({name: 'John'}));
-  localStorage.removeItem('data');
-  console.log(JSON.parse(localStorage.getItem('data')))
+/*********Question Constructor**********/
+function Question(id, questionText, options, correctAnswer) {
+
+  this.id = id;
+  this.questionText = questionText;
+  this.options = options;
+  this.correctAnswer = correctAnswer;
+}
+
 
 }) ();
 
 /*************************************************************************UICONTROLLER****************************************************************/
 var UIController = (function() {
 
+  var domItems = {
+    /********Admin Panal Elements*********/
+    questInsertBtn: document.getElementById('question-insert-btn')
+  };
+
+  return {
+    getdomItems: domItems
+  };
+
 })();
 
 /*************************************************************************CONTROLLER****************************************************************/
 var controller  = (function(quizCtrl, UICtrl){
+
+  UICtrl.getdomItems.questInsertBtn.addEventListener('click', function(){
+    console.log('this is a button clicked')
+  })
 
 })(quizController, UIController);
