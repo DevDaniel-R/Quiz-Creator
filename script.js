@@ -13,12 +13,40 @@ function Question(id, questionText, options, correctAnswer) {
   this.correctAnswer = correctAnswer;
 }
 
+  var questionLocalStorage = {
+    setQuestionCollection: function(newCollection){
+      localStorage.setItem('questionCollection', JSON.stringify(newCollection));
+    },
+    getQuestionCollection: function(){
+      return JASON.parse(localStorage.getitem('questionCollection'))
+    },
+    removeQuesitonCollection: function(){
+      localStorage.removeItem('questionCollection');
+    }
+  };
+
   return {
     addQuestionOnLocalStorage: function(newQuestText, opts) {
-      console.log('clicked newQuestText')
-    }
-  }
+      var optionsArr, corrAns, questionId, newQuestion;
 
+      optionsArr = [];
+
+      questionId = 0;
+
+      for (var i = 0; i < opts.length; i++) {
+        if(opts[i].value !== "") {
+          optionsArr.push(opts[i].value);
+        }
+
+        if(opts[i].previousElementSibling.checked && opts[i].value !== "") {
+          corrAns = opts[i].value;
+        }
+      }
+
+      newQuestion = new Question(questionId, newQuestText.value, optionsArr, corrAns);
+      console.log(newQuestion);
+    }
+  };
 
 }) ();
 
@@ -43,7 +71,7 @@ var controller  = (function(quizCtrl, UICtrl){
   var selectedDomItems = UICtrl.getDomItems;
 
   selectedDomItems.questInsertBtn.addEventListener('click', function() {
-    quizCtrl.addQuestionOnLocalStorage(selectedDomItems.newQuestText, selectedDomItems.adminOptions);
+    quizCtrl.addQuestionOnLocalStorage(selectedDomItems.newQuestionText, selectedDomItems.adminOptions);
   })
 
 })(quizController, UIController);
