@@ -27,13 +27,15 @@ var quizController = (function () {
 
     return {
         addQuestionLocalStorage: function (newQuestText, opts) {
-            var optionsArr, corrAns, questionId, newQuestion, getStoredQuests;
+            var optionsArr, corrAns, questionId, newQuestion, getStoredQuests, isChecked;
 
             if (questionLocalStorage.getQuestionCollection() === null) {
                 questionLocalStorage.setQuestionCollection([]);
             }
 
             optionsArr = [];
+
+            isChecked = false;
 
             for (var i = 0; i < opts.length; i++) {
                 if (opts[i].value !== "") {
@@ -42,6 +44,7 @@ var quizController = (function () {
 
                 if (opts[i].previousElementSibling.checked && opts[i].value !== "") {
                     corrAns = opts[i].value;
+                    isChecked = true;
                 }
             }
 
@@ -52,20 +55,33 @@ var quizController = (function () {
                 questionId = 0;
             }
 
-            newQuestion = new Question(questionId, newQuestText.value, optionsArr, corrAns);
+            if (newQuestText.value !== "") {
+                if (optionsArr.length > 1) {
+                    if (isChecked) {
 
-            getStoredQuests = questionLocalStorage.getQuestionCollection();
+                        newQuestion = new Question(questionId, newQuestText.value, optionsArr, corrAns);
 
-            getStoredQuests.push(newQuestion);
-            questionLocalStorage.setQuestionCollection(getStoredQuests);
+                        getStoredQuests = questionLocalStorage.getQuestionCollection();
 
-            newQuestText.value = "";
+                        getStoredQuests.push(newQuestion);
+                        questionLocalStorage.setQuestionCollection(getStoredQuests);
 
-            for (var x = 0, x < opts.length; x++) {
-                opts[x].valur = "";
-                opts[x].previousElementSibling.checked = false;
+                        newQuestText.value = "";
+
+                        for (var x = 0; x < opts.length; x++) {
+                            opts[x].value = "";
+                            opts[x].previousElementSibling.checked = false;
+                        }
+                        console.log(questionLocalStorage.getQuestionCollection());
+                    } else {
+                        alert('You missed to check correct answer or you checked answer without value')
+                    }
+                } else {
+                    alert('You must insert at least two options')
+                }
+            } else {
+                alert('Please, insert question');
             }
-            console.log(questionLocalStorage.getQuestionCollection());
         }
     };
 
